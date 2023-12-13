@@ -1,0 +1,158 @@
+db.students.insertOne({
+    name: 'Josh',
+    age: 30
+});
+
+
+db.students.find();
+
+db.students.find({
+    firstName: 'John'
+});
+
+db.students.insertMany([
+    { name: "Halley's Comet", officialName: "1P/Halley", orbitalPeriod: 75, radius: 3.4175, mass: 2.2e14 },
+    { name: "Wild2", officialName: "81P/Wild", orbitalPeriod: 6.41, radius: 1.5534, mass: 2.3e13 },
+    { name: "Comet Hyakutake", officialName: "C/1996 B2", orbitalPeriod: 17000, radius: 0.77671, mass: 8.8e12 }
+]);
+
+
+db.students.find({
+    status: {
+        $in: ['A', 'R']
+    }
+});
+
+db.students.find({
+    orbitalPeriod: {
+        $gt: 10
+    }
+});
+
+
+//   AND
+db.students.find({
+    name: 'Josh',
+    age: {
+        $lt: 40
+    }
+});
+
+//   OR
+db.students.find({
+    $or: [{
+        status: 'D'
+    }, {
+        qnt: 100
+    }]
+});
+
+
+db.students.find({
+    status: 'D',
+    qnt: {
+        $gt: 50
+    }
+});
+
+
+db.students.find({
+    firstName: {
+        $exists: true
+    },
+    lastName: {
+        $exists: true
+    }
+});
+
+db.students.drop();
+
+
+
+
+db.inventory.find();
+
+db.inventory.insertMany([
+    { name: "Bob's Comet", officialName: "1P/Bob", orbitalPeriod: 84, radius: 5.4175, mass: 1.2e14, status: 'A', qnt: 40, size: {w:35} },
+    { name: "Wild5", officialName: "81P/Wild5", orbitalPeriod: 9.41, radius: 2.5534, mass: 3.3e13, status: 'A', qnt: 75, size: {w: 12} },
+    { name: "Comet Garivelt", officialName: "B/1997 C7", orbitalPeriod: 13000, radius: 0.57671, mass: 7.8e12, status: 'D', qnt: 100, size: {w: 55} }
+]);
+
+db.inventory.updateOne({
+    name: 'Wild2'
+}, {
+    $set: {
+        name: 'Wild30'
+    }
+});
+
+db.inventory.updateMany({
+    name: {
+        $exists: true
+    }
+}, {
+    $set: {
+        status: 'A'
+    }
+});
+
+
+db.inventory.insertOne({
+    item: 'Canvas',
+    qty: 100,
+    size: {
+        h: 28,
+        w: 35,
+        uom: 'cm'
+    }
+});
+
+db.inventory.updateOne({
+    'size.uom': 'cm'
+}, {
+    $set: {
+        'size.uom': 'ft'
+    }
+});
+
+db.inventory.deleteMany({
+    status: 'A'
+});
+
+db.inventory.deleteMany({});
+
+
+db.inventory.find({
+    $or: [{
+        status: 'D'
+    }, {
+        status: 'A',
+        qnt: {
+            $gte: 75
+        }
+    }]
+});
+
+db.inventory.updateOne({
+    qnt: 30
+}, {
+    $set: {
+        qnt: 120
+    }
+});
+
+
+db.inventory.find();
+
+
+db.inventory.updateMany({
+    'size.w': {
+        $gt: 30
+    }
+}, {
+    $set: {
+        status: 'Done'
+    }
+});
+
+
