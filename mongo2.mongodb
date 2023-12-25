@@ -1,0 +1,165 @@
+db.createCollection("cats", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ['name', 'color', 'weight'],
+            properties: {
+                name: {
+                    bsonType: "string",
+                    description: "'name' must be a string and is required"
+                },
+                color: {
+                    bsonType: "string",
+                    description: "'color' must be a string and is required"
+                },
+                weight: {
+                    bsonType: "double",
+                    description: "'weight' must be a string and is required"
+                },
+                address: {
+                    bsonType: "object",
+                    required: ['city', 'street'],
+                    properties: {
+                        city: {
+                            bsonType: "string"
+                        },
+                        street: {
+                            bsonType: "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+});
+
+db.cats.insertOne({
+    name: "Murzik",
+    color: "brown",
+    weight: 11.1,
+    address: {
+        city: "Odessa",
+        street: "new"
+    }
+});
+
+
+db.cats.find();
+
+
+
+db.createCollection("users", {
+    validator: {
+        $jsonSchema: {
+            bsonType: 'object',
+            required: ['firstName', 'lastName', 'birthday', 'email', 'password'],
+            properties: {
+                firstName: {
+                    bsonType: 'string',
+                    description: "'firstName' must be a string and is required"
+                },
+                lastName: {
+                    bsonType: 'string',
+                    description: "'lastName' must be a string and is required"
+                },
+                birthday: {
+                    bsonType: 'string',
+                    description: "'birthday' must be a string and is required"
+                },
+                email: {
+                    bsonType: 'string',
+                    description: "'email' must be a string and is required"
+                },
+                password: {
+                    bsonType: 'string',
+                    description: "'password' must be a string and is required"
+                },
+                address: {
+                    bsonType: 'object',
+                    required: ['city'],
+                    properties: {
+                        city: {
+                            bsonType: 'string'
+                        }
+                    }
+                }
+            }
+        }
+    }
+});
+
+db.runCommand({collMod: 'users',                           //Modify the validation schema
+validator: {
+    $jsonSchema: {
+        bsonType: 'object',
+        required: ['firstName', 'lastName', 'birthday', 'email', 'password'],
+        properties: {
+            firstName: {
+                bsonType: 'string',
+                description: "'firstName' must be a string and is required"
+            },
+            lastName: {
+                bsonType: 'string',
+                description: "'lastName' must be a string and is required"
+            },
+            birthday: {
+                bsonType: 'string',
+                description: "'birthday' must be a string and is required"
+            },
+            email: {
+                bsonType: 'string',
+                description: "'email' must be a string and is required"
+            },
+            password: {
+                bsonType: 'string',
+                description: "'password' must be a string and is required"
+            },
+            address: {
+                bsonType: 'object',
+                required: ['city'],
+                properties: {
+                    city: {
+                        bsonType: 'string'
+                    }
+                }
+            }
+        }
+    }
+}
+});
+
+
+db.users.insertOne({
+    firstName: 'John',
+    lastName: 'Doe',
+    birthday: '10-10-2000',
+    email: 'john.doe@go',
+    password: 'johndoe',
+    address: {
+        city: 'Lille',
+        street: 'doestreet',
+        house: '5'
+    }
+});
+
+
+db.users.find();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
