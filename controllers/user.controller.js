@@ -32,7 +32,7 @@ module.exports.getOne = async (req, res, next) => {
 module.exports.updateUser = async (req, res, next) => {
     try {
         const { body, params: { userId } } = req;
-        const updated = await User.findByIdAndUpdate(userId, body);
+        const updated = await User.findByIdAndUpdate(userId, body, {returnDocument: 'after'});
         res.status(200).send(updated);
     } catch (error) {
         next(error);
@@ -43,7 +43,7 @@ module.exports.deleteUser = async (req, res, next) => {
     try {
         const { params: { userId } } = req;
         const deleted = await User.findOneAndDelete(userId);
-        res.status(200).send(deleted);
+        res.status(204).send(deleted);
     } catch (error) {
         next(error);
     }
