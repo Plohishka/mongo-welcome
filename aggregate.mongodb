@@ -93,6 +93,14 @@ db.products.aggregate([
     },
     {
         $unset: 'manufacturerId'    //удаляет указанное поле
+    },
+    {
+        $group: {
+          _id: '$manufacturer.name',   //ключ по которому сгрупировали
+          countProducts: {
+            $sum: '$amount'                    //колличество товара
+          }
+        }
     }
 ]);
 
