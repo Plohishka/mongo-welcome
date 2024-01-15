@@ -81,13 +81,15 @@ db.products.insertMany([
     }
 ]);
 
-db.products.aggregate([
-    {$lookup: {
-      from: 'manufacturers',
-      localField: 'manufacturerId',
-      foreignField: '_id',
-      as: 'manufacturer'
-    }},
+db.products.aggregate([                                                                               //!!!!!!!!!!!!!!!!!
+    {
+        $lookup: {
+            from: 'manufacturers',
+            localField: 'manufacturerId',
+            foreignField: '_id',
+            as: 'manufacturer'
+        }
+    },
     {
         $unwind: '$manufacturer'     //распаковывает массив
     },
@@ -96,13 +98,139 @@ db.products.aggregate([
     },
     {
         $group: {
-          _id: '$manufacturer.name',   //ключ по которому сгрупировали
-          countProducts: {
-            $sum: '$amount'                    //колличество товара
-          }
+            _id: '$manufacturer.name',   //ключ по которому сгрупировали
+            countProducts: {
+                $sum: '$amount'                    //колличество товара
+            }
         }
     }
 ]);
+
+
+//SORT
+
+db.products.aggregate([
+    {
+        $sort: {
+            price: 1   //сортировка по цене на увеличение  (-1 на уменьшение)
+        }
+    }, {
+        $limit: 3
+    }
+]);
+
+//Pagination
+
+db.products.find().limit(3).skip(2);   //skip(2) - пропустить первые 2
+
+
+///////////////////////////////
+
+db.createCollection('students', {
+    validator: {
+        $jsonSchema: {
+            bsonType: 'object',
+            required: ['firstName', 'lastName', 'email', 'group'],
+            properties: {
+                firstName: {
+                    bsonType: 'string'
+                },
+                lastName: {
+                    bsonType: 'string'
+                },
+                email: {
+                    bsonType: 'string'
+                },
+                group: {
+                    bsonType: 'int'
+                }
+            }
+        }
+    }
+});
+
+
+db.students.insertMany([
+    {
+        firstName: 'Alex',
+        lastName: 'Row',
+        email: 'alex@row.rt',
+        group: 5
+    },
+    {
+        firstName: 'Bob',
+        lastName: 'Mirgan',
+        email: 'bob@mirg.rt',
+        group: 2
+    },
+    {
+        firstName: 'Jack',
+        lastName: 'Back',
+        email: 'jack@back.rt',
+        group: 5
+    },
+]);
+
+db.students.find();
+
+db.createCollection('groups', {
+    validator: {
+        $jsonSchema: {
+            bsonType: 'object',
+            required: ['name', 'teacher'],
+            properties: {
+                name: {
+                    bsonType: 'int'
+                },
+                teacher: {
+                    bsonType: 'string'
+                }
+            }
+        }
+    }
+});
+
+
+db.groups.insertMany([
+    {
+        name: 5,
+        teacher: 'Malouvski'
+    },
+    {
+        name: 2,
+        teacher: 'Perty'
+    }
+]);
+
+db.groups.find();
+
+
+
+db.students.aggregate([
+    {
+        $lookup: {
+          from: 'groups',
+          localField: 'groupId',
+          foreignField: '_id',
+          as: 'group'
+        }
+    },
+    {
+        $group: {
+            _id: 'groups.name',
+            countProducts: {
+                $sum: '$amount'
+            }
+        }
+    }
+]);
+
+
+
+
+
+
+
 
 
 

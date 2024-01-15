@@ -145,6 +145,8 @@ db.users.insertOne({
 
 db.users.find();
 
+db.users.drop();
+
 
 
 

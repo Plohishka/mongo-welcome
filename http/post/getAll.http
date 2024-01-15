@@ -1,0 +1,1 @@
+GET http://localhost:5000/api/posts/?limit=2&skip=1 HTTP/1.1

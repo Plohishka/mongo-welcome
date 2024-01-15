@@ -1,14 +1,11 @@
 const express = require('express');
-const UserController = require('./controllers/user.controller');
+const rootRouter = require('./routes');
 
 const app = express();
-app.use(express.json());
 
-app.post('/', UserController.createUser);
-app.get('/', UserController.getAll);
-app.get('/:userId', UserController.getOne);
-app.put('/:userId', UserController.updateUser);
-app.delete('/:userId', UserController.deleteUser);
+app.use(express.json());
+app.use('/api', rootRouter);
+
 
 
 
